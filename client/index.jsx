@@ -1,5 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
-ReactDOM.render(<h1>Welcome to Quiz</h1>,
+function Application() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path={"/"} element={<FrontPage />}/>
+                <Route path={"/questions"} element={<Quiz/>}/>
+            </Routes>
+        </BrowserRouter>
+    );
+}
+
+ReactDOM.render(<Application/>,
     document.getElementById("app"));
