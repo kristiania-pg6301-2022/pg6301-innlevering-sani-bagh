@@ -36,12 +36,25 @@ function Quiz() {
     </div>;
 }
 
+function ListQuestions() {
+    return <div>
+        <h1>All questions with correct answers</h1>
+        {Questions.map(q =>
+        <div key={q.id}>
+            <h1>{q.question}</h1>
+            <p>{q.answer}</p>
+        </div>
+        )}
+    </div>;
+}
+
 function Application() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path={"/"} element={<FrontPage />}/>
                 <Route path={"/questions"} element={<Quiz/>}/>
+                <Route path={"/answers"} element={<ListQuestions/>}/>
                 <Route path={"/*"} element={<h1>Not found</h1>}/>
             </Routes>
         </BrowserRouter>
