@@ -2,7 +2,8 @@ import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
-import {Questions, randomQuestion} from "./questions";
+import {randomQuestion} from "./questions";
+import {ListQuestions} from "./quiz";
 
 function FrontPage() {
     return <div>
@@ -36,17 +37,7 @@ function Quiz() {
     </div>;
 }
 
-function ListQuestions() {
-    return <div>
-        <h1>All questions with correct answers</h1>
-        {Questions.map(q =>
-        <div key={q.id}>
-            <h1>{q.question}</h1>
-            <p>{q.answer}</p>
-        </div>
-        )}
-    </div>;
-}
+
 
 function Application() {
     return (
