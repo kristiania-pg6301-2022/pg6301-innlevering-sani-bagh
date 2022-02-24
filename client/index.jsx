@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
-import {randomQuestion} from "./questions";
-import {ListQuestions} from "./quiz";
+
+import {ListQuestions, Quiz} from "./quiz";
 
 function FrontPage() {
     return <div>
@@ -17,25 +17,7 @@ function FrontPage() {
     </div>;
 }
 
-function Quiz() {
-    const [question, setQuestion] = useState(randomQuestion());
-    const [answer, setAnswer] = useState();
 
-    if (answer) {
-        return <h1>{question.options[answer] === question.answer ? "The answer is correct" : "The answer is wrong"}</h1>;
-    }
-
-
-    return <div>
-        <h1>{question.question}</h1>
-        {Object.keys(question.options)
-            .filter(option => question.options[option])
-            .map(option => <p key={option}>
-                <button onClick={() => setAnswer(option)}>{question.options[option]}</button>
-            </p> )
-        }
-    </div>;
-}
 
 
 
