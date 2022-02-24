@@ -1,5 +1,18 @@
 import {Questions, randomQuestion} from "./questions";
-import React from "react";
+import React, {useState} from "react";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+
+export function FrontPage() {
+    return <div>
+        <h1>Welcome to Quiz</h1>
+        <div>
+            <ul>
+                <li><Link to={"/questions"}>Take quiz</Link></li>
+                <li><Link to={"/answers"}>All questions with answers</Link></li>
+            </ul>
+        </div>
+    </div>;
+}
 
 export function ListQuestions() {
     return <div>
@@ -31,4 +44,17 @@ export function Quiz() {
             </p> )
         }
     </div>;
+}
+
+export function Application() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path={"/"} element={<FrontPage />}/>
+                <Route path={"/questions"} element={<Quiz/>}/>
+                <Route path={"/answers"} element={<ListQuestions/>}/>
+                <Route path={"/*"} element={<h1>Not found</h1>}/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
