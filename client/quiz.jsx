@@ -1,39 +1,74 @@
-import {Questions, randomQuestion} from "./questions";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
 export function FrontPage() {
     return <div>
         <h1>Welcome to Quiz</h1>
-        <div>
             <ul>
                 <li><Link to={"/questions"}>Take quiz</Link></li>
-                <li><Link to={"/answers"}>All questions with answers</Link></li>
+                <li><Link to={"/questions/answer"}>All questions with answers</Link></li>
             </ul>
-        </div>
     </div>;
 }
 
+function useLoading(loadingFunction) {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    const [data, setData] = useState();
+
+    async function load() {
+        try {
+            setLoading(true);
+            setData(await loadingFunction());
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        load();
+    }, []);
+
+    return { loading, error, data };
+}
+
+async function fetchJSON(url) {
+    const res = await fetch(url);
+    if (!res.ok){
+        throw new Error(`Failed to load ${res.status}: ${res.statusText}`);
+    }
+    return await res.json();
+}
+
 export function ListQuestions() {
+    const {loading, error, data} = useLoading(
+        async () => fetchJSON("/api/questions")
+    );
+
+    if (loading) {
+        return <div>Loading...</div>
+    }
+
+    if (error) {
+        return <div>
+            <h1>Error</h1>
+            <div>{error.toString()}</div>
+        </div>
+    }
+
     return <div>
         <h1>All questions with correct answers</h1>
-        {Questions.map(q =>
-            <div key={q.id}>
-                <h1>{q.question}</h1>
-                <p>{q.answer}</p>
-            </div>
-        )}
+        <ul>
+            {data.map((question) => (
+                <li key={question.id}>{question.question}</li>
+            ))}
+        </ul>
     </div>;
 }
 
 export function Quiz() {
-    const [question, setQuestion] = useState(randomQuestion());
-    const [answer, setAnswer] = useState();
-
-    if (answer) {
-        return <h1>{question.options[answer] === question.answer ? "The answer is correct" : "The answer is wrong"}</h1>;
-    }
-
 
     return <div>
         <h1>{question.question}</h1>
@@ -52,7 +87,7 @@ export function Application() {
             <Routes>
                 <Route path={"/"} element={<FrontPage />}/>
                 <Route path={"/questions"} element={<Quiz/>}/>
-                <Route path={"/answers"} element={<ListQuestions/>}/>
+                <Route path={"/questions/answer"} element={<ListQuestions/>}/>
                 <Route path={"/*"} element={<h1>Not found</h1>}/>
             </Routes>
         </BrowserRouter>

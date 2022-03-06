@@ -2,10 +2,10 @@
   "name": "client",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel serve index.html",
-    "test": "jest"
+    "build": "npm install --include=dev && parcel build index.html"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,9 @@
     "@babel/preset-react": "^7.16.7",
     "babel-jest": "^27.5.1",
     "jest": "^27.5.1",
-    "parcel": "^2.3.2"
+    "parcel": "^2.3.2",
+    "querystring-es3": "^0.2.1",
+    "url": "^0.11.0"
   },
   "dependencies": {
     "react": "^17.0.2",
